@@ -1,7 +1,7 @@
 package Equipements;
 
 import Outils.Outils;
-
+//BANJOURE
 import static Outils.Outils.lancerDes;
 
 /**
