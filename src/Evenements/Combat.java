@@ -17,6 +17,7 @@ public class Combat {
 
     public Combat() {
         this.kromrak = Kromrak.getInstance();
+        System.out.println("chat");
         this.personnages = new Personnage[]{kromrak, new Ennemi("goblin 1"), new Ennemi("goblin 2")};
     }
 
