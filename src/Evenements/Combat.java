@@ -23,15 +23,23 @@ public class Combat {
 
     public void combat()
     {
+        //TODO: ordreTour() est VRAIMENT inutile, les enemis sont triés de toute manière.
         ordreTour();
 
+        //TODO: A la place de faire jouer le tour des mobs (if (personnage == this.kromrak)),
+        //TODO: chaques personnages devraient implémenter les méthodes jouerTour(),
+        //TODO: au lieux que ces méthodes soient dans la classe Combat.
         while (this.verifierEtat() == 0 ) {
             for (Personnage personnage : this.personnages) {
                 if (this.verifierEtat() != 0) break;
                 else if (personnage.estVivant() && personnage.avancerVitesse() == true) {
                     System.out.println(System.lineSeparator() + "Tour " + this.tour);
-                    if (personnage == this.kromrak) tourKromrak();
-                    else if (personnage.estVivant())tourEnnemi(personnage);
+                    if (personnage == this.kromrak){
+                        tourKromrak();
+                    }
+                    else {
+                        tourEnnemi(personnage);
+                    }
                     this.tour++;
                 }
             }
@@ -48,9 +56,8 @@ public class Combat {
 
 
     protected void tourKromrak(){
-        boolean valide = true;
+        boolean valide;
         Scanner scanner;
-        String choix;
 
         System.out.println(System.lineSeparator() + "Votre tour : ");
         System.out.println("1. Attaquer");
@@ -58,16 +65,16 @@ public class Combat {
         do{
             valide = true;
             scanner = new Scanner(System.in);
-            choix = scanner.nextLine();
-            switch (choix){
+            switch (scanner.nextLine()){//choix){
                 case "1":
-                    cible();
+                    choisirCible();
                     if (this.kromrak.verrifierReaction() > 0) reactionEnnemi(this.kromrak.getCible());
                     this.kromrak.attaquer();
                     if (!(this.kromrak.getCible().estVivant())) ennemiMort(this.kromrak.getCible());
                     break;
                 default:
                     valide = false;
+                    System.out.println("Choisissez un bon numéro d'ennemi!");
                     break;
             }
         } while (!valide);
@@ -88,25 +95,24 @@ public class Combat {
         ennemi.attaquer();
     }
 
-    protected void cible(){
+    protected void choisirCible(){
         boolean valide = true;
         int noEnnemi = 0;
         Scanner scanner;
-        String choix;
 
-        System.out.println("Choisisser votre cible : ");
+        System.out.print("Choisisser votre cible :");
 
         for (int i = 1; i < this.personnages.length; i++){
+            if (i != this.personnages.length)
+                System.out.print("          ");
             if(this.personnages[i].estVivant())
-                System.out.println(i + ". " + this.personnages[i].getNom());
-            i++;
+                System.out.print(i + ". " + this.personnages[i].getNom());
         }
 
         do{
-            valide = false;//changer pour test github. À remettre à true.
+            valide = true;
             scanner = new Scanner(System.in);
-            choix = scanner.nextLine();
-            noEnnemi = Integer.parseInt(choix) - 1;
+            noEnnemi = Integer.parseInt(scanner.nextLine()) - 1;
             if ( !this.personnages[noEnnemi].estVivant() || noEnnemi < 0 || noEnnemi >= this.personnages.length - 1) {
                 valide = false;
             }

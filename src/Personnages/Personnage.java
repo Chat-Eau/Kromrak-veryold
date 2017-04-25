@@ -2,6 +2,7 @@ package Personnages;
 
 
 import Equipements.Arme;
+import Outils.Outils;
 
 import java.util.Random;
 
@@ -11,27 +12,28 @@ import java.util.Random;
 public class Personnage {
     protected Arme arme;
     protected String nom;
+    //TODO: Cible? Pourquoi personnage a besoin d'un personnage cible?
+    //TODO: La cible devrait etre le paramètre d'une fonction attaquer, pas une variable.
     protected Personnage cible;
 
     protected boolean parade = false;
 
-
-    protected int vieMax;
-    protected int vie;
     private int barreVitesse = 0;
 
     //Attributs
+    //TODO: Une classe pour chaque attribut?
+    //TODO: Pour séparer les get/set, les gérer individuellement pour les caps...
+    protected int vieMax;
+    protected int vie;
     protected int vitesse = 0;
     protected int force = 0;
     protected int dextérité = 0;//à faire
     protected int endurance = 0;//à faire
     protected int intelligence = 0;//à faire
-
-
     protected int CA = 1;
+
     static public final int STEP_TOUR = 3;
     static public final int STEP_REACTION = 100;
-
 
 
     protected Personnage() {}
@@ -42,23 +44,18 @@ public class Personnage {
         degats = (degats > 0)?degats:1;
         this.parade = false;
 
-        System.out.println(this.nom + " à reçu: " + degats + " dégats.");
+        System.out.println(this.nom + " a reçu: " + degats + " dégats.");
 
         this.vie -= degats;
 
-        if (this.vie < 0)
-        {
-            this.vie = 0;
-        }
+        Outils.maxAtteint(vie, vieMax);
     }
 
     public int attaquer()
     {
         int degats = this.arme.getDegats();
 
-        this.cible.recevoirDegats(degats
-                                        + this.force
-                                        - this.cible.CA);
+        this.cible.recevoirDegats(degats + this.force - this.cible.CA);
 
         return degats;
     }
@@ -71,7 +68,8 @@ public class Personnage {
             this.vie = vieMax;
         }
     }
-    public void changerArme (Arme arme)
+
+    public void setArme (Arme arme)
     {
         this.arme = arme;
     }

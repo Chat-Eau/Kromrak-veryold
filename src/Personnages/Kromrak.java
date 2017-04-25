@@ -12,13 +12,11 @@ public class Kromrak extends Personnage {
         this.vieMax = 40;
         this.vie = vieMax;
 
-        this.force = 1;
-        this.vitesse = 2;
+        this.force = 0;
+        this.vitesse = 0;
 
         this.arme = new Arme("Épée longue et dure", 1, 0);
         this.cible = null;
-
-
     }
 
     private static Kromrak kromrak = new Kromrak();
