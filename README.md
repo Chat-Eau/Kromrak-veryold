@@ -1,3 +1,2 @@
 # Kromrak
-
-#Kromrak c'est le kromrak ultime. Merci d'aider.
+Benjamin, tu pourrais tu gosser dans les options pour me donner des droits quelconques?
