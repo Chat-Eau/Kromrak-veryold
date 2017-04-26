@@ -17,7 +17,7 @@ public class Kromrak extends Personnage {
         vieMax = 40;
         vie = vieMax;
         vitesse = 1;
-        force = 1;
+        force = 0;
         dextérité = 1;//à faire
         endurance = 1;//à faire
         intelligence = 1;//à faire

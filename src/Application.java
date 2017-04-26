@@ -6,6 +6,6 @@ import Evenements.Combat;
 public class Application {
     public static void main(String[] args) {
         Combat combatTest = new Combat();
-        combatTest.combat();
+        combatTest.combattre();
     }
 }

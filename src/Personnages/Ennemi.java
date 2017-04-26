@@ -15,11 +15,13 @@ public class Ennemi extends Personnage {
         //TODO: Faire deux fonctions jouerTour(). Celle des ennemis attaque toujours le joueur.
         this.cible = Kromrak.getInstance();
 
-        this.vieMax = Outils.lancerDes(1, 2);
-        this.vitesse = Outils.lancerDes(1,-1);
-        this.dextérité = Outils.lancerDes(1, -1);
-
-        this.vie = vieMax;
+        vieMax = Outils.lancerDes(1, 2);
+        vie = vieMax;
+        vitesse = Outils.lancerDes(1, -1);
+        force = Outils.lancerDes(1, -2);
+        dextérité = Outils.lancerDes(1, -2);
+        endurance = Outils.lancerDes(1, -2);
+        intelligence = 0;
+        CA = Outils.lancerDes(1, -2);
     }
-
 }

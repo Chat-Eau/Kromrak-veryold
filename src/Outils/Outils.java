@@ -25,7 +25,14 @@ public class Outils {
         return total > 0 ? total : 0;
     }
 
-    static public int maxAtteint(int stat, int max){
+    static public int maxCap(int stat, int max){
         return stat > max ? max : stat;
+    }
+    static public int minCap(int stat, int min){
+        return stat < min ? min : stat;
+    }
+    static public int minMaxCap(int stat, int min, int max){
+        stat = stat > max ? max : stat;
+        return stat < min ? min : stat;
     }
 }

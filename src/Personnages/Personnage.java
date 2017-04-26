@@ -44,18 +44,18 @@ public class Personnage {
         degats = (degats > 0)?degats:1;
         this.parade = false;
 
-        System.out.println(this.nom + " a reçu: " + degats + " dégats.");
+        System.out.print(this.nom + " a reçu: " + degats + " dégats." + System.lineSeparator());
 
         this.vie -= degats;
 
-        Outils.maxAtteint(vie, vieMax);
+        Outils.maxCap(vie, vieMax);
     }
 
     public int attaquer()
     {
         int degats = this.arme.getDegats();
 
-        this.cible.recevoirDegats(degats + this.force - this.cible.CA);
+        cible.recevoirDegats(Outils.minCap((degats + force - cible.CA), 1));
 
         return degats;
     }
