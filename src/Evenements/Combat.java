@@ -17,7 +17,6 @@ public class Combat {
 
     public Combat() {
         this.kromrak = Kromrak.getInstance();
-        System.out.println("chat");
         //TODO: Faire une fonction qui parse les ennemis et leur donne des nombres si leur nom est en double?
         //TODO: Nommer les ennemis individuellement ne se fait pas lors de la génération aléatoire
         this.personnages = new Personnage[]{kromrak, new Ennemi("goblin"), new Ennemi("goblin")};
@@ -61,6 +60,7 @@ public class Combat {
 
         System.out.println(System.lineSeparator() + "Au tour de Kromrak!");
         System.out.println("Vos choix: 1. Attaquer");
+        System.out.print("Choix : ");
 
         do{
             valide = true;
@@ -74,7 +74,7 @@ public class Combat {
                     break;
                 default:
                     valide = false;
-                    System.out.println("Choisissez un bon numéro d'ennemi!");
+                    System.out.print("Choisissez un numéro d'action correct parmis vos choix : ");
                     break;
             }
         } while (!valide);
@@ -96,8 +96,8 @@ public class Combat {
     }
 
     protected void choisirCible(){
-        boolean valide = true;
         int noEnnemi = 0;
+        boolean mauvaisChoix = false;
         Scanner scanner;
 
         System.out.println("Choisisser votre cible :");
@@ -110,14 +110,27 @@ public class Combat {
         }
         System.out.println();
 
+
+        //TODO:GLM: Sa serais pas mieux de faire une fonction qui pop les ennemis?
+        //TODO:GLM: La fonction pop pourrais potentiellement les détruire, mais ajouter leur loot
+        //TODO:GLM: à une variable de la classe combat "Loot"?
+        scanner = new Scanner(System.in);
+
+        System.out.print("Faites votre choix : ");
         do{
-            valide = true;
-            scanner = new Scanner(System.in);
-            noEnnemi = Integer.parseInt(scanner.nextLine()) - 1;
-            if ( !this.personnages[noEnnemi].estVivant() || noEnnemi < 0 || noEnnemi >= this.personnages.length - 1) {
-                valide = false;
-            }
-        } while (!valide);
+            do{
+                if (mauvaisChoix){
+                    System.out.print("Vous devez cibler un ennemi existant :");
+                } else {
+                    mauvaisChoix = true;
+                }
+                while (!scanner.hasNextInt()){
+                    System.out.print("Vous devez choisir un nombre : ");
+                    scanner.next();
+                }
+                noEnnemi = scanner.nextInt();
+            } while (noEnnemi < 1 || noEnnemi > this.personnages.length - 1);
+        } while (!this.personnages[noEnnemi].estVivant());
 
         this.kromrak.setCible(this.personnages[noEnnemi]);
     }
