@@ -18,7 +18,9 @@ public class Combat {
     public Combat() {
         this.kromrak = Kromrak.getInstance();
         System.out.println("chat");
-        this.personnages = new Personnage[]{kromrak, new Ennemi("goblin 1"), new Ennemi("goblin 2")};
+        //TODO: Faire une fonction qui parse les ennemis et leur donne des nombres si leur nom est en double?
+        //TODO: Nommer les ennemis individuellement ne se fait pas lors de la génération aléatoire
+        this.personnages = new Personnage[]{kromrak, new Ennemi("goblin"), new Ennemi("goblin")};
     }
 
     public void combat()
@@ -29,15 +31,16 @@ public class Combat {
         //TODO: A la place de faire jouer le tour des mobs (if (personnage == this.kromrak)),
         //TODO: chaques personnages devraient implémenter les méthodes jouerTour(),
         //TODO: au lieux que ces méthodes soient dans la classe Combat.
+        //TODO: personnage.jouerTour()
         while (this.verifierEtat() == 0 ) {
             for (Personnage personnage : this.personnages) {
                 if (this.verifierEtat() != 0) break;
                 else if (personnage.estVivant() && personnage.avancerVitesse() == true) {
                     System.out.println(System.lineSeparator() + "Tour " + this.tour);
+                    //TODO: personnage.jouerTour();
                     if (personnage == this.kromrak){
                         tourKromrak();
-                    }
-                    else {
+                    } else {
                         tourEnnemi(personnage);
                     }
                     this.tour++;
@@ -45,12 +48,9 @@ public class Combat {
             }
         }
 
-        if (this.verifierEtat() < 1) {
-            System.out.println("Va chier Kromrak.");
-        }
-        else {
-            System.out.println("Je t'aime, Kromrak!");
-        }
+        //TODO: Créer une méthode qui gère les fins de combats?
+        //TODO: OU retourner l'état du combat, vu que le message de fin/loot/etc ne fais techniquement pas partie d'un combat
+        System.out.println(this.verifierEtat() < 1 ? "Va chier Kromrak." : "Je t'aime, Kromrak!");
     }
 
 
@@ -59,8 +59,8 @@ public class Combat {
         boolean valide;
         Scanner scanner;
 
-        System.out.println(System.lineSeparator() + "Votre tour : ");
-        System.out.println("1. Attaquer");
+        System.out.println(System.lineSeparator() + "Au tour de Kromrak!");
+        System.out.println("Vos choix: 1. Attaquer");
 
         do{
             valide = true;
@@ -70,7 +70,7 @@ public class Combat {
                     choisirCible();
                     if (this.kromrak.verrifierReaction() > 0) reactionEnnemi(this.kromrak.getCible());
                     this.kromrak.attaquer();
-                    if (!(this.kromrak.getCible().estVivant())) ennemiMort(this.kromrak.getCible());
+                    if (!this.kromrak.getCible().estVivant()) ennemiMort(this.kromrak.getCible());
                     break;
                 default:
                     valide = false;
@@ -91,7 +91,7 @@ public class Combat {
     }
 
     protected void tourEnnemi(Personnage ennemi){
-        System.out.println(System.lineSeparator() + ennemi.getNom());
+        System.out.println(System.lineSeparator() + "Au tour de : " + ennemi.getNom());
         ennemi.attaquer();
     }
 
@@ -100,14 +100,15 @@ public class Combat {
         int noEnnemi = 0;
         Scanner scanner;
 
-        System.out.print("Choisisser votre cible :");
+        System.out.println("Choisisser votre cible :");
 
         for (int i = 1; i < this.personnages.length; i++){
-            if (i != this.personnages.length)
-                System.out.print("          ");
+            if (i != this.personnages.length && i != 1)
+                System.out.print(",                        ");
             if(this.personnages[i].estVivant())
                 System.out.print(i + ". " + this.personnages[i].getNom());
         }
+        System.out.println();
 
         do{
             valide = true;
@@ -116,19 +117,16 @@ public class Combat {
             if ( !this.personnages[noEnnemi].estVivant() || noEnnemi < 0 || noEnnemi >= this.personnages.length - 1) {
                 valide = false;
             }
-
         } while (!valide);
 
         this.kromrak.setCible(this.personnages[noEnnemi]);
     }
 
     protected int verifierEtat(){
-        int etatCombat = 1;
+        if (!this.kromrak.estVivant()) return -1;
         for (Personnage personnage:this.personnages)
-            if (personnage.estVivant()) etatCombat = 0;
-        if (!this.kromrak.estVivant()) etatCombat = -1;
-
-        return etatCombat;
+            if (personnage.estVivant()) return 0;
+        return 1;
     }
 
     protected void ennemiMort(Personnage mort) {

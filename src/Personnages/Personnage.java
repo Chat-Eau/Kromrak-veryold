@@ -84,7 +84,7 @@ public class Personnage {
         this.barreVitesse += STEP_TOUR + vitesse;
 
         if (this.barreVitesse >= 100) {
-            this.barreVitesse = 0;
+            this.barreVitesse -= 100;
             return true;
         }
         else return false;

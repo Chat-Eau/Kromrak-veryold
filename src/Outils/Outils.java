@@ -13,10 +13,7 @@ public class Outils {
             total += new Random().nextInt(4) + 1 + base;
         total *= multiplicateur;
 
-        if (total < 0)
-            total = 0;
-
-        return total;
+        return total > 0 ? total : 0;
     }
 
     static public int lancerDes(int nbDés, int base) {
@@ -25,17 +22,10 @@ public class Outils {
         for (int x = 0; x < nbDés; x++)
             total += new Random().nextInt(4) + 1 + base;
 
-        if (total < 0)
-            total = 0;
-
-        return total;
+        return total > 0 ? total : 0;
     }
 
     static public int maxAtteint(int stat, int max){
-        if (stat > max) {
-            return max;
-        } else {
-            return stat;
-        }
+        return stat > max ? max : stat;
     }
 }
