@@ -9,7 +9,7 @@ public class Arme {
     private String nom;
     private int nbDés;
     private int modificateur;
-    int patate =10;
+
 
     public Arme () {
         this.nbDés = 1;
