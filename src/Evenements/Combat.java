@@ -17,14 +17,14 @@ public class Combat {
 
     public Combat() {
         this.kromrak = Kromrak.getInstance();
-        System.out.println("chat");
         //TODO: Faire une fonction qui parse les ennemis et leur donne des nombres si leur nom est en double?
         //TODO: Nommer les ennemis individuellement ne se fait pas lors de la génération aléatoire
         this.personnages = new Personnage[]{kromrak, new Ennemi("goblin"), new Ennemi("goblin")};
     }
 
-    public void combat()
+    public void combattre()
     {
+        boolean combatFini = false;
         //TODO: ordreTour() est VRAIMENT inutile, les enemis sont triés de toute manière.
         ordreTour();
 
@@ -32,22 +32,24 @@ public class Combat {
         //TODO: chaques personnages devraient implémenter les méthodes jouerTour(),
         //TODO: au lieux que ces méthodes soient dans la classe Combat.
         //TODO: personnage.jouerTour()
-        while (this.verifierEtat() == 0 ) {
+
+        while (!combatFini) {
             for (Personnage personnage : this.personnages) {
-                if (this.verifierEtat() != 0) break;
-                else if (personnage.estVivant() && personnage.avancerVitesse() == true) {
-                    System.out.println(System.lineSeparator() + "Tour " + this.tour);
+                if (personnage.estVivant() && personnage.avancerVitesse() == true && !combatFini) {
+                    System.out.print(System.lineSeparator() + "Tour " + this.tour++ + " : ");
                     //TODO: personnage.jouerTour();
-                    if (personnage == this.kromrak){
+                    if (personnage == this.kromrak) {
                         tourKromrak();
                     } else {
                         tourEnnemi(personnage);
                     }
-                    this.tour++;
+
+                    if (this.verifierEtat() != 0){
+                        combatFini = true;
+                    }
                 }
             }
         }
-
         //TODO: Créer une méthode qui gère les fins de combats?
         //TODO: OU retourner l'état du combat, vu que le message de fin/loot/etc ne fais techniquement pas partie d'un combat
         System.out.println(this.verifierEtat() < 1 ? "Va chier Kromrak." : "Je t'aime, Kromrak!");
@@ -59,8 +61,9 @@ public class Combat {
         boolean valide;
         Scanner scanner;
 
-        System.out.println(System.lineSeparator() + "Au tour de Kromrak!");
+        System.out.println(" Au tour de Kromrak!");
         System.out.println("Vos choix: 1. Attaquer");
+        System.out.print("Choix : ");
 
         do{
             valide = true;
@@ -74,7 +77,7 @@ public class Combat {
                     break;
                 default:
                     valide = false;
-                    System.out.println("Choisissez un bon numéro d'ennemi!");
+                    System.out.print("Choisissez un numéro d'action correct parmis vos choix : ");
                     break;
             }
         } while (!valide);
@@ -82,25 +85,25 @@ public class Combat {
 
     protected void reactionEnnemi(Personnage ennemi) {
         if (new Random().nextInt(3) == 0) {
-            System.out.println(System.lineSeparator() + ennemi.getNom() + " bloque l'attaque!" + System.lineSeparator());
+            System.out.print(ennemi.getNom() + " bloque l'attaque et ");
             ennemi.activerParade();
         } else {
-            System.out.println(System.lineSeparator() + ennemi.getNom() + " contre-attaque!" + System.lineSeparator());
+            System.out.println(ennemi.getNom() + " contre-attaque!" + System.lineSeparator());
             ennemi.attaquer();
         }
     }
 
     protected void tourEnnemi(Personnage ennemi){
-        System.out.println(System.lineSeparator() + "Au tour de : " + ennemi.getNom());
+        System.out.println("Au tour de : " + ennemi.getNom());
         ennemi.attaquer();
     }
 
     protected void choisirCible(){
-        boolean valide = true;
         int noEnnemi = 0;
+        boolean mauvaisChoix = false;
         Scanner scanner;
 
-        System.out.println("Choisisser votre cible :");
+        System.out.print(System.lineSeparator() + "Choisisser votre cible :     ");
 
         for (int i = 1; i < this.personnages.length; i++){
             if (i != this.personnages.length && i != 1)
@@ -110,27 +113,40 @@ public class Combat {
         }
         System.out.println();
 
-        do{
-            valide = true;
-            scanner = new Scanner(System.in);
-            noEnnemi = Integer.parseInt(scanner.nextLine()) - 1;
-            if ( !this.personnages[noEnnemi].estVivant() || noEnnemi < 0 || noEnnemi >= this.personnages.length - 1) {
-                valide = false;
-            }
-        } while (!valide);
 
+        //TODO:GLM: Sa serais pas mieux de faire une fonction qui pop les ennemis?
+        //TODO:GLM: La fonction pop pourrais potentiellement les détruire, mais ajouter leur loot
+        //TODO:GLM: à une variable de la classe combat "Loot"?
+        scanner = new Scanner(System.in);
+
+        System.out.print("Faites votre choix : ");
+        do{
+            do{
+                if (mauvaisChoix){
+                    System.out.print("Vous devez cibler un ennemi existant :");
+                } else {
+                    mauvaisChoix = true;
+                }
+                while (!scanner.hasNextInt()){
+                    System.out.print("Vous devez choisir un nombre : ");
+                    scanner.next();
+                }
+                noEnnemi = scanner.nextInt();
+            } while (noEnnemi < 1 || noEnnemi > this.personnages.length - 1);
+        } while (!this.personnages[noEnnemi].estVivant());
+        System.out.println();
         this.kromrak.setCible(this.personnages[noEnnemi]);
     }
 
     protected int verifierEtat(){
         if (!this.kromrak.estVivant()) return -1;
         for (Personnage personnage:this.personnages)
-            if (personnage.estVivant()) return 0;
+            if (personnage.estVivant() && personnage != this.kromrak) return 0;
         return 1;
     }
 
     protected void ennemiMort(Personnage mort) {
-        System.out.println(this.kromrak.getCible().getNom() + " est mort." + System.lineSeparator());
+        System.out.println(this.kromrak.getCible().getNom() + " est mort.");
     }
 
     protected void ordreTour() {
