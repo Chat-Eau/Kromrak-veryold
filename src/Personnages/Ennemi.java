@@ -24,4 +24,9 @@ public class Ennemi extends Personnage {
         intelligence = 0;
         CA = Outils.lancerDes(1, -2);
     }
+
+//    public void jouerTour(){
+//        System.out.println("Au tour de : " + this.getNom());
+//        this.attaquer();
+//    }
 }

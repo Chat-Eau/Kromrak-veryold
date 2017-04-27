@@ -136,5 +136,4 @@ public class Personnage {
     public void activerParade() { parade = true; }
 
     public void setCible(Personnage cible) {this.cible = cible; }
-
 }
