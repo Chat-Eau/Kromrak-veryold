@@ -7,3 +7,7 @@ if(condition){valeurTrue;} else {valeurFalse;}
 Le if deviens :
 
 Condition ? valeurTrue : valeurFalse;
+
+
+
+TESTESCLULE
