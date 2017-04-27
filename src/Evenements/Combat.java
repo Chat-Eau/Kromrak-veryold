@@ -18,6 +18,8 @@ public class Combat {
     public Combat() {
         this.kromrak = Kromrak.getInstance();
         //TODO: Faire une fonction qui parse les ennemis et leur donne des nombres si leur nom est en double?
+        //Benjamin: Pas nécessaire pour l'instant. on verra plus tard.
+
         //TODO: Nommer les ennemis individuellement ne se fait pas lors de la génération aléatoire
         this.personnages = new Personnage[]{kromrak, new Ennemi("goblin"), new Ennemi("goblin")};
     }
@@ -73,7 +75,7 @@ public class Combat {
                     choisirCible();
                     if (this.kromrak.verrifierReaction() > 0) reactionEnnemi(this.kromrak.getCible());
                     this.kromrak.attaquer();
-                    if (!this.kromrak.getCible().estVivant()) ennemiMort(this.kromrak.getCible());
+                    if (!this.kromrak.getCible().estVivant()) afficherMort(this.kromrak.getCible());
                     break;
                 default:
                     valide = false;
@@ -145,7 +147,7 @@ public class Combat {
         return 1;
     }
 
-    protected void ennemiMort(Personnage mort) {
+    protected void afficherMort(Personnage mort) {
         System.out.println(this.kromrak.getCible().getNom() + " est mort.");
     }
 
