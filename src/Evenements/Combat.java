@@ -28,7 +28,7 @@ public class Combat {
     {
         boolean combatFini = false;
         //TODO: ordreTour() est VRAIMENT inutile, les enemis sont triés de toute manière.
-        ordreTour();
+//        ordreTour();
 
         //TODO: A la place de faire jouer le tour des mobs (if (personnage == this.kromrak)),
         //TODO: chaques personnages devraient implémenter les méthodes jouerTour(),
@@ -151,18 +151,22 @@ public class Combat {
         System.out.println(this.kromrak.getCible().getNom() + " est mort.");
     }
 
-    protected void ordreTour() {
-        Personnage tampon;
-        for (int i = this.personnages.length; i > 1; i--) {
-            tampon = this.personnages[1];
-            for (int j = 2; j < i; j++) {
-                if (tampon.getVitesse() > this.personnages[j].getVitesse()) {
-                    tampon = this.personnages[j];
-                } else {
-                    this.personnages[j - 1] = this.personnages[j];
-                    this.personnages[j] = tampon;
-                }
-            }
-        }
+//    protected void ordreTour() {
+//        Personnage tampon;
+//        for (int i = this.personnages.length; i > 1; i--) {
+//            tampon = this.personnages[1];
+//            for (int j = 2; j < i; j++) {
+//                if (tampon.getVitesse() > this.personnages[j].getVitesse()) {
+//                    tampon = this.personnages[j];
+//                } else {
+//                    this.personnages[j - 1] = this.personnages[j];
+//                    this.personnages[j] = tampon;
+//                }
+//            }
+//        }
+//    }
+
+    protected void popPersonnage(Personnage personnage){
+        this.personnages.
     }
 }
