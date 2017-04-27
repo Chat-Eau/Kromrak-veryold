@@ -1,7 +1,5 @@
 package Equipements;
 
-import Outils.Outils;
-
 import static Outils.Outils.lancerDes;
 
 /**
@@ -11,6 +9,7 @@ public class Arme {
     private String nom;
     private int nbDés;
     private int modificateur;
+
 
     public Arme () {
         this.nbDés = 1;
